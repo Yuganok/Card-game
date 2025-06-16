@@ -1,6 +1,6 @@
 <template>
   <div class="board-wrapper">
-    <div class="board">
+    <div class="board" :style="{ gridTemplateColumns: `repeat(${size}, 70px)`, gridTemplateRows: `repeat(${rows}, 70px)` }">
       <template v-for="card in cards" :key="card.id">
         <Card
           :card="card"
@@ -31,11 +31,18 @@ export default {
     resetKey: {
       type: Number,
       default: 0
+    },
+    size: {
+      type: Number,
+      default: 4
+    },
+    rows: {
+      type: Number,
+      default: 4
     }
   },
   data() {
     return {
-      size: 4, // 4x4
       cards: [],
       opened: [],
       moves: 0,
@@ -46,6 +53,12 @@ export default {
   watch: {
     resetKey() {
       this.initGame();
+    },
+    size() {
+      this.initGame();
+    },
+    rows() {
+      this.initGame();
     }
   },
   created() {
@@ -54,9 +67,18 @@ export default {
   emits: ['game-over', 'error', 'move'],
   methods: {
     initGame() {
-      const icons = ['🍎','🍌','🍒','🍇','🍉','🍋','🍓','🍑'];
+      const icons = [
+        '🍎','🍌','🍒','🍇','🍉','🍋','🍓','🍑',
+        '🥝','🍍','🥥','🥭','🍈','🍏','🍐','🍊',
+        '🍔','🍕','🍟','🌭','🍿','🥨','🥐','🥯',
+        '🥞','🧇','🍗','🍖','🍤','🍣','🍱','🍛',
+        '🍙','🍚','🍘','🍥','🥮','🍢','🍡','🍧',
+        '🍨','🍦','🥧','🧁','🍰','🎂','🍮','🍭',
+        '🍬','🍫','🍩','🍪','🥠','🥟','🍯','🥜',
+        '🍞','🥖','🥓','🥩','🥚','🧀','🍠','🥔'
+      ];
       let cards = [];
-      for (let i = 0; i < this.size * this.size / 2; i++) {
+      for (let i = 0; i < this.size * this.rows / 2; i++) {
         cards.push({ id: i*2, icon: icons[i], matched: false });
         cards.push({ id: i*2+1, icon: icons[i], matched: false });
       }
@@ -107,7 +129,6 @@ export default {
 }
 .board {
   display: grid;
-  grid-template-columns: repeat(4, 70px);
   grid-gap: 10px;
   justify-content: center;
   align-items: center;

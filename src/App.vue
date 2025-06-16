@@ -10,6 +10,8 @@ export default {
       errors: 0,
       round: 1,
       resetKey: 0,
+      size: 4, // columns
+      rows: 4, // rows
     };
   },
   methods: {
@@ -31,6 +33,22 @@ export default {
       this.round++;
       this.resetKey++;
     },
+    selectDifficulty(level) {
+      let newCols = 4;
+      let newRows = 4;
+      if (level === 'easy') { newCols = 4; newRows = 4; }
+      if (level === 'medium') { newCols = 6; newRows = 6; }
+      if (level === 'hard') { newCols = 7; newRows = 6; }
+      if (this.size !== newCols || this.rows !== newRows) {
+        this.size = newCols;
+        this.rows = newRows;
+        this.resetKey++;
+        this.gameOver = false;
+        this.moves = 0;
+        this.errors = 0;
+        this.round++;
+      }
+    },
   },
 };
 </script>
@@ -42,6 +60,8 @@ export default {
         v-if="!gameOver"
         :hideMatched="true"
         :resetKey="resetKey"
+        :size="size"
+        :rows="rows"
         @game-over="onGameOver"
         @error="onError"
         @move="onMove"
@@ -57,6 +77,11 @@ export default {
       <span>Moves: {{ moves }}</span>
       <span>Round: {{ round }}</span>
       <span>Errors: {{ errors }}</span>
+      <span class="difficulty-bar">
+        <button :class="{active: size === 4}" @click="selectDifficulty('easy')">Easy</button>
+        <button :class="{active: size === 6}" @click="selectDifficulty('medium')">Medium</button>
+        <button :class="{active: size === 7 && rows === 6}" @click="selectDifficulty('hard')">Hard</button>
+      </span>
     </div>
   </div>
 </template>
@@ -119,5 +144,25 @@ button:hover {
   font-size: 1.1em;
   letter-spacing: 1px;
   z-index: 10;
+  align-items: center;
+}
+.difficulty-bar {
+  display: flex;
+  gap: 8px;
+  margin-left: 30px;
+}
+.difficulty-bar button {
+  padding: 4px 14px;
+  font-size: 1em;
+  border-radius: 6px;
+  border: none;
+  background: #3498db;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.difficulty-bar button.active,
+.difficulty-bar button:hover {
+  background: #217dbb;
 }
 </style>
