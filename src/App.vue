@@ -47,16 +47,16 @@ export default {
         @move="onMove"
       />
       <div v-else class="stats">
-        <h2>Игра окончена!</h2>
-        <p>Ходов: {{ moves }}</p>
-        <p>Ошибок: {{ errors }}</p>
-        <button @click="restart">Сыграть ещё</button>
+        <h2>Game Over!</h2>
+        <p>Moves: {{ moves }}</p>
+        <p>Errors: {{ errors }}</p>
+        <button @click="restart">Play Again</button>
       </div>
     </div>
     <div class="status-bar">
-      <span>Ходы: {{ moves }}</span>
-      <span>Раунд: {{ round }}</span>
-      <span>Ошибки: {{ errors }}</span>
+      <span>Moves: {{ moves }}</span>
+      <span>Round: {{ round }}</span>
+      <span>Errors: {{ errors }}</span>
     </div>
   </div>
 </template>
